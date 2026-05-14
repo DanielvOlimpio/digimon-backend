@@ -25,7 +25,14 @@ app.get("/health", (req, res) => {
 });
 
 app.get("/digimon", (req, res) => {
-  res.json(digimon);
+  const nameQueryRaw = req.query?.name;
+  const nameQuery = typeof nameQueryRaw === "string" ? nameQueryRaw.trim() : "";
+
+  if (!nameQuery) return res.json(digimon);
+
+  const q = nameQuery.toLowerCase();
+  const filtered = digimon.filter((d) => d.name.toLowerCase().includes(q));
+  res.json(filtered);
 });
 
 app.get("/digimon/:id", (req, res) => {

@@ -19,6 +19,7 @@ Servidor padrão: `http://localhost:3000`
 - `GET /` → info da API
 - `GET /health` → health check
 - `GET /digimon` → lista todos
+  - opcional: `GET /digimon?name=agu` → filtra por nome (contém, case-insensitive)
 - `GET /digimon/:id` → busca por id
 - `POST /digimon` → cria
   - body JSON: `{ "name": "...", "level": "...", "type": "..." }`
@@ -28,4 +29,3 @@ Servidor padrão: `http://localhost:3000`
 
 ## Observações
 - Os dados ficam **somente em memória**: ao reiniciar o servidor, volta ao estado inicial.
-# digimon-backend
