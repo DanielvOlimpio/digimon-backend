@@ -14,12 +14,35 @@ npm run dev
 
 Servidor padrão: `http://localhost:3000`
 
+## Deploy no Render
+
+Opção A (manual)
+
+1. Suba este repositório no GitHub (com o `package-lock.json`, pois vamos usar `npm ci`).
+2. No Render: **New** → **Web Service** → conecte seu repo.
+3. Configure:
+  - Environment: **Node**
+  - Build Command: `npm ci`
+  - Start Command: `npm start`
+4. Deploy.
+5. Teste: `https://SUA-URL.onrender.com/health`.
+
+Notas:
+- O Render define `PORT` automaticamente; o servidor já usa `process.env.PORT`.
+- Se você preferir, dá pra trocar o Build Command para `npm install` (mas `npm ci` é mais previsível).
+
+Opção B (opcional): Blueprint
+
+- Se quiser deploy automático via Blueprint, commite o [render.yaml](render.yaml) e use **New** → **Blueprint**.
+
 ## Rotas
 
 - `GET /` → info da API
 - `GET /health` → health check
 - `GET /digimon` → lista todos
   - opcional: `GET /digimon?name=agu` → filtra por nome (contém, case-insensitive)
+  - opcional: `GET /digimon?level=Rookie` → filtra por level (igual, case-insensitive)
+  - pode combinar: `GET /digimon?name=mon&level=Rookie`
 - `GET /digimon/:id` → busca por id
 - `POST /digimon` → cria
   - body JSON: `{ "name": "...", "level": "...", "type": "..." }`

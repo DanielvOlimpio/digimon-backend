@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: digimon-backend
+    env: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Opcional: fixe a versão do Node no Render (também há "engines" no package.json)
+      - key: NODE_VERSION
+        value: 20

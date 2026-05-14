@@ -28,10 +28,23 @@ app.get("/digimon", (req, res) => {
   const nameQueryRaw = req.query?.name;
   const nameQuery = typeof nameQueryRaw === "string" ? nameQueryRaw.trim() : "";
 
-  if (!nameQuery) return res.json(digimon);
+  const levelQueryRaw = req.query?.level;
+  const levelQuery = typeof levelQueryRaw === "string" ? levelQueryRaw.trim() : "";
 
-  const q = nameQuery.toLowerCase();
-  const filtered = digimon.filter((d) => d.name.toLowerCase().includes(q));
+  if (!nameQuery && !levelQuery) return res.json(digimon);
+
+  let filtered = digimon;
+
+  if (nameQuery) {
+    const q = nameQuery.toLowerCase();
+    filtered = filtered.filter((d) => d.name.toLowerCase().includes(q));
+  }
+
+  if (levelQuery) {
+    const q = levelQuery.toLowerCase();
+    filtered = filtered.filter((d) => (d.level ?? "").toLowerCase() === q);
+  }
+
   res.json(filtered);
 });
 
