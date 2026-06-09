@@ -3,8 +3,30 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors());
+const corsOrigins = [
+  process.env.FRONTEND_URL,
+  process.env.CODESPACE_FRONTEND_URL,
+  "http://localhost:3000",
+  "http://localhost:4173",
+  "http://localhost:5173",
+  /^https:\/\/.*\.vercel\.app$/
+].filter(Boolean);
+
+const corsOptions = {
+  origin: corsOrigins,
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization"
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
+
+function formatDateTime(date) {
+  return new Intl.DateTimeFormat("pt-BR", {
+    dateStyle: "short",
+    timeStyle: "medium"
+  }).format(date);
+}
 
 let nextId = 4;
 let digimon = [
@@ -17,6 +39,13 @@ app.get("/", (req, res) => {
   res.json({
     name: "digimon-backend",
     message: "API simples de Digimon. Veja /digimon e /health."
+  });
+});
+
+app.get("/v1", (req, res) => {
+  res.json({
+    message: "Api v1 respondendo no container docker...",
+    chamada_em: formatDateTime(new Date())
   });
 });
 
@@ -109,7 +138,7 @@ app.use((req, res) => {
   res.status(404).json({ error: "Rota não encontrada" });
 });
 
-const port = Number(process.env.PORT) || 3000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
